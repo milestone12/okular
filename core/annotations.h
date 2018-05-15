@@ -1127,10 +1127,14 @@ class OKULARCORE_EXPORT HighlightAnnotation : public Annotation
          */
         void setHighlightType( HighlightType type );
 
+        void setCopyHighlightedText(bool use);
+
         /**
          * Returns the type of the highlight annotation.
          */
         HighlightType highlightType() const;
+
+        bool useCopyHighlightedText() const;
 
         /**
          * The Quad class contains 8 coordinates and style definitions

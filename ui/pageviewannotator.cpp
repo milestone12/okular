@@ -621,10 +621,15 @@ class TextSelectorEngine : public AnnotatorEngine
                 ann = ha;
             }
 
-            text = item()->page()->text(selection, Okular::TextPage::CentralPixelTextAreaInclusionBehaviour);
-            text.remove(QString("-\n"));
-            text.replace(QChar('\n'), QChar(' '));
-            text = text.trimmed();
+            bool copyHighlightedText = false;
+            if(m_annotElement.hasAttribute("copyHighlightedText")){
+            	copyHighlightedText = true;
+
+				text = item()->page()->text(selection, Okular::TextPage::CentralPixelTextAreaInclusionBehaviour);
+				text.remove(QString("-\n"));
+				text.replace(QChar('\n'), QChar(' '));
+				text = text.trimmed();
+            }
 
             delete selection;
             selection = nullptr;
@@ -639,7 +644,10 @@ class TextSelectorEngine : public AnnotatorEngine
             if ( m_annotElement.hasAttribute( QStringLiteral("opacity") ) )
                 ann->style().setOpacity( m_annotElement.attribute( QStringLiteral("opacity"), QStringLiteral("1.0") ).toDouble() );
 
-            ann->setContents(text);
+            if(copyHighlightedText)
+            {
+            	ann->setContents(text);
+            }
 
             // return annotations
             return QList< Okular::Annotation* >() << ann;

@@ -176,6 +176,7 @@ protected:
 private:
     Okular::HighlightAnnotation * m_hlAnn;
     QComboBox * m_typeCombo;
+    QCheckBox * m_copyHighlightedCheck;
 };
 
 class GeomAnnotationWidget

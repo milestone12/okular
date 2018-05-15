@@ -1913,7 +1913,7 @@ class Okular::HighlightAnnotationPrivate : public Okular::AnnotationPrivate
 {
     public:
         HighlightAnnotationPrivate()
-            : AnnotationPrivate(), m_highlightType( HighlightAnnotation::Highlight )
+            : AnnotationPrivate(), m_highlightType( HighlightAnnotation::Highlight ), m_useCopyHighlightedText(false)
         {
         }
 
@@ -1925,6 +1925,8 @@ class Okular::HighlightAnnotationPrivate : public Okular::AnnotationPrivate
 
         HighlightAnnotation::HighlightType m_highlightType;
         QList< HighlightAnnotation::Quad > m_highlightQuads;
+
+        bool m_useCopyHighlightedText;
 };
 
 HighlightAnnotation::HighlightAnnotation()
@@ -1947,10 +1949,22 @@ void HighlightAnnotation::setHighlightType( HighlightType type )
     d->m_highlightType = type;
 }
 
+void HighlightAnnotation::setCopyHighlightedText( bool use )
+{
+	Q_D( HighlightAnnotation );
+	d->m_useCopyHighlightedText = use;
+}
+
 HighlightAnnotation::HighlightType HighlightAnnotation::highlightType() const
 {
     Q_D( const HighlightAnnotation );
     return d->m_highlightType;
+}
+
+bool HighlightAnnotation::useCopyHighlightedText() const
+{
+	Q_D( const HighlightAnnotation );
+	return d->m_useCopyHighlightedText;
 }
 
 QList< HighlightAnnotation::Quad > & HighlightAnnotation::highlightQuads()

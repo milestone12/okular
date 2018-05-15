@@ -549,13 +549,27 @@ QWidget * HighlightAnnotationWidget::createStyleWidget()
     tmplabel->setBuddy( m_typeCombo );
     typelay->addWidget( m_typeCombo );
 
+    QHBoxLayout * copyHighlightedLay = new QHBoxLayout();
+    lay->addLayout(copyHighlightedLay);
+    tmplabel = new QLabel( i18n( "Copy Highlighted Text:" ), widget );
+    copyHighlightedLay->addWidget( tmplabel, 0, Qt::AlignRight );
+    m_copyHighlightedCheck = new QCheckBox( widget);
+    tmplabel->setBuddy( m_copyHighlightedCheck);
+    copyHighlightedLay->addWidget( m_copyHighlightedCheck );
+
     m_typeCombo->addItem( i18n( "Highlight" ) );
     m_typeCombo->addItem( i18n( "Squiggle" ) );
     m_typeCombo->addItem( i18n( "Underline" ) );
     m_typeCombo->addItem( i18n( "Strike out" ) );
     m_typeCombo->setCurrentIndex( m_hlAnn->highlightType() );
 
+    if(m_hlAnn->useCopyHighlightedText())
+    {
+    	m_copyHighlightedCheck->setCheckState(Qt::Checked);
+    }
+
     connect( m_typeCombo, SIGNAL(currentIndexChanged(int)), this, SIGNAL(dataChanged()) );
+    connect(m_copyHighlightedCheck, SIGNAL(toggled(bool)), this, SIGNAL(dataChanged()));
 
     return widget;
 }
@@ -564,6 +578,7 @@ void HighlightAnnotationWidget::applyChanges()
 {
     AnnotationWidget::applyChanges();
     m_hlAnn->setHighlightType( (Okular::HighlightAnnotation::HighlightType)m_typeCombo->currentIndex() );
+    m_hlAnn->setCopyHighlightedText(m_copyHighlightedCheck->isChecked());
 }
 
 

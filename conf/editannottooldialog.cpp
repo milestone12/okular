@@ -219,6 +219,11 @@ QDomDocument EditAnnotToolDialog::toolXml() const
                 break;
         }
 
+        if ( ha->useCopyHighlightedText() )
+        {
+        	annotationElement.setAttribute( "copyHighlightedText", "true" );
+        }
+
         engineElement.setAttribute( QStringLiteral("type"), QStringLiteral("TextSelector") );
         engineElement.setAttribute( QStringLiteral("color"), color );
         annotationElement.setAttribute( QStringLiteral("color"), color );
@@ -475,6 +480,19 @@ void EditAnnotToolDialog::loadTool( const QDomElement &toolElement )
 
     if ( toolElement.hasAttribute( QStringLiteral("name") ) )
         m_name->setText( toolElement.attribute( QStringLiteral("name") ) );
+
+    if ( annotType == "underline" || annotType == "strikeout" || annotType == "squiggly" || annotType == "highlight" )
+    {
+    	Okular::HighlightAnnotation * ha = static_cast<Okular::HighlightAnnotation*>( m_stubann );
+    	if ( annotationElement.hasAttribute( "copyHighlightedText" ) )
+    	{
+    		ha->setCopyHighlightedText( true );
+    	}
+    	else
+    	{
+    		ha->setCopyHighlightedText( false );
+    	}
+    }
 }
 
 void EditAnnotToolDialog::slotTypeChanged()
